@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .dashboard-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 30px;
+        }
+        .welcome-message {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .student-info {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 25px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .student-info h3 {
+            margin-top: 0;
+            color: #495057;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .info-item {
+            padding: 15px;
+            background-color: white;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+        }
+        .info-item strong {
+            color: #495057;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .info-item span {
+            color: #6c757d;
+            font-size: 16px;
+        }
+        .session-info {
+            background-color: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .session-info h3 {
+            margin-top: 0;
+            color: #004085;
+        }
+        .actions {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+    </style>
+    <script>
+        function formatLoginTime(timestamp) {
+            if (!timestamp) return 'Unknown';
+            const date = new Date(timestamp);
+            return date.toLocaleString();
+        }
+        
+        window.onload = function() {
+            const loginTimeElement = document.getElementById('loginTime');
+            const timestamp = loginTimeElement.getAttribute('data-timestamp');
+            if (timestamp) {
+                loginTimeElement.textContent = formatLoginTime(parseInt(timestamp));
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>🎓 Student Dashboard</h1>
+        
+        <div th:if="${student}" class="welcome-message">
+            Welcome back, <strong th:text="${student.name}"></strong>! 
+            You are successfully logged in.
+        </div>
+        
+        <div th:if="${student}" class="student-info">
+            <h3>Your Information</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <strong>Student ID</strong>
+                    <span th:text="${student.id}"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Roll Number</strong>
+                    <span th:text="${student.rollNo}"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Name</strong>
+                    <span th:text="${student.name}"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Branch</strong>
+                    <span th:text="${student.branch}"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Course</strong>
+                    <span th:text="${student.course}"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Login Time</strong>
+                    <span id="loginTime" th:attr="data-timestamp=${loginTime}">Loading...</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="session-info">
+            <h3>Session Information</h3>
+            <p><strong>Status:</strong> <span style="color: #28a745; font-weight: bold;">ACTIVE</span></p>
+            <p><strong>Session Type:</strong> Student Login Demo</p>
+            <p><strong>Access Level:</strong> Student Dashboard</p>
+        </div>
+        
+        <div class="actions">
+            <a href="/web/users" class="btn btn-primary">View All Students</a>
+            <a th:href="@{'/web/users/' + ${student?.id}}" class="btn btn-secondary">View My Profile</a>
+            <a th:href="@{'/web/users/' + ${student?.id} + '/edit'}" class="btn btn-success">Edit My Profile</a>
+            
+            <form th:action="@{/login/logout}" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-danger" 
+                        onclick="return confirm('Are you sure you want to logout?')">
+                    Logout
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
