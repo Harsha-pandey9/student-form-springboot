@@ -1,0 +1,129 @@
+# User Management API - HTTP Test File
+# Use this with VS Code REST Client extension or similar tools
+
+### Variables
+@baseUrl = http://localhost:8080
+@apiPath = /api/users
+
+### 1. GET - Get All Users
+GET {{baseUrl}}{{apiPath}}
+Content-Type: application/json
+
+### 2. POST - Create a New User
+POST {{baseUrl}}{{apiPath}}
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "rollNo": 12345,
+    "branch": "Computer Science",
+    "course": "B.Tech"
+}
+
+### 3. POST - Create Another User
+POST {{baseUrl}}{{apiPath}}
+Content-Type: application/json
+
+{
+    "name": "Jane Smith",
+    "rollNo": 12346,
+    "branch": "Electrical Engineering",
+    "course": "B.Tech"
+}
+
+### 4. GET - Get All Users (After Creation)
+GET {{baseUrl}}{{apiPath}}
+Content-Type: application/json
+
+### 5. GET - Get Specific User by ID
+GET {{baseUrl}}{{apiPath}}/1
+Content-Type: application/json
+
+### 6. PATCH - Update User (Partial Update)
+PATCH {{baseUrl}}{{apiPath}}/1
+Content-Type: application/json
+
+{
+    "name": "John Doe Updated",
+    "branch": "Information Technology"
+}
+
+### 7. GET - Verify Update
+GET {{baseUrl}}{{apiPath}}/1
+Content-Type: application/json
+
+### 8. PATCH - Update Only Name
+PATCH {{baseUrl}}{{apiPath}}/2
+Content-Type: application/json
+
+{
+    "course": "M.Tech"
+}
+
+### 9. GET - Search Users by Name
+GET {{baseUrl}}{{apiPath}}/search?name=John
+Content-Type: application/json
+
+### 10. GET - Get User by Roll Number
+GET {{baseUrl}}{{apiPath}}/rollno/12345
+Content-Type: application/json
+
+### 11. GET - Get Users by Branch
+GET {{baseUrl}}{{apiPath}}/branch/Information Technology
+Content-Type: application/json
+
+### 12. GET - Get Users by Course
+GET {{baseUrl}}{{apiPath}}/course/B.Tech
+Content-Type: application/json
+
+### 13. DELETE - Delete a User
+DELETE {{baseUrl}}{{apiPath}}/2
+Content-Type: application/json
+
+### 14. GET - Verify Deletion
+GET {{baseUrl}}{{apiPath}}
+Content-Type: application/json
+
+### ===== ERROR TESTING =====
+
+### 15. GET - Non-existent User (404 Error)
+GET {{baseUrl}}{{apiPath}}/999999
+Content-Type: application/json
+
+### 16. POST - Invalid Data (Validation Error)
+POST {{baseUrl}}{{apiPath}}
+Content-Type: application/json
+
+{
+    "name": "",
+    "rollNo": -1,
+    "branch": "",
+    "course": ""
+}
+
+### 17. POST - Duplicate Roll Number (Business Logic Error)
+POST {{baseUrl}}{{apiPath}}
+Content-Type: application/json
+
+{
+    "name": "Duplicate User",
+    "rollNo": 12345,
+    "branch": "Test Branch",
+    "course": "Test Course"
+}
+
+### 18. PATCH - Non-existent User (404 Error)
+PATCH {{baseUrl}}{{apiPath}}/999999
+Content-Type: application/json
+
+{
+    "name": "Updated Name"
+}
+
+### 19. DELETE - Non-existent User (404 Error)
+DELETE {{baseUrl}}{{apiPath}}/999999
+Content-Type: application/json
+
+### 20. Final Cleanup - Delete Remaining Users
+DELETE {{baseUrl}}{{apiPath}}/1
+Content-Type: application/json
