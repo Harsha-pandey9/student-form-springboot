@@ -31,3 +31,34 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Qodo ###
+.qodo/
+
+### Logs ###
+*.log
+logs/
+
+### OS ###
+.DS_Store
+Thumbs.db
+
+### Temporary files ###
+*.tmp
+*.temp
+*~
+
+### Docker (removed) ###
+*.dockerfile
+docker-compose*.yml
+.dockerignore
+
+### Maven Wrapper (removed) ###
+mvnw
+mvnw.cmd
+.mvn/
+
+### Documentation (keeping only essential) ###
+*.md
+!README.md
+!TROUBLESHOOTING.txt
